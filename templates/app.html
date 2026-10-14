@@ -1,0 +1,16 @@
+{% load static %}<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Projectus · Пространство проектов</title>
+  <link rel="stylesheet" href="{% static 'app.css' %}">
+  <link rel="stylesheet" href="{% static 'frontend/main.css' %}">
+</head>
+<body>
+  <div id="app"><p role="status">Загрузка Projectus…</p></div>
+  {{ bootstrap|json_script:'projectus-bootstrap' }}
+  <script type="module" src="{% static 'frontend/app.js' %}"></script>
+  <noscript><style>#app { display: none; }</style>{{ fallback|safe }}</noscript>
+</body>
+</html>

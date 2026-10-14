@@ -1,0 +1,4 @@
+{% extends 'base.html' %}{% block content %}
+<section class="form-card"><a href="{{ back_url }}">← Вернуться</a><h1>{{ title }}</h1>
+<form method="post" enctype="multipart/form-data">{% csrf_token %}{% include 'form_fields.html' %}<button class="button">{{ button }}</button></form></section>
+{% endblock %}

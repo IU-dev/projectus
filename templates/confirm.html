@@ -1,0 +1,1 @@
+{% extends 'base.html' %}{% block content %}<section class="form-card"><div class="eyebrow">PROJECTUS</div><h1>{{ title }}</h1><p class="muted">{{ description }}</p>{% if button %}<form method="post">{% csrf_token %}<button class="button">{{ button }}</button></form>{% endif %}</section>{% endblock %}

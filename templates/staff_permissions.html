@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+<a class="back" href="{% url 'operations' %}">← Управление сервисом</a>
+<h1>Полномочия сотрудников</h1>
+<div class="detail-grid">
+  <section class="panel">
+    <h2>Назначить полномочия</h2>
+    {% if selected_user %}
+      <p><strong>{{ selected_user.get_full_name }}</strong> {{ selected_user.email }}</p>
+      <a href="{% url 'staff_permissions' %}">Выбрать другого</a>
+    {% else %}
+      <form method="get">
+        <label for="staff-search">Пользователь</label>
+        <input id="staff-search" type="search" name="q" value="{{ search_query }}" minlength="3" maxlength="100" required placeholder="Имя или email">
+        <p class="help">Введите минимум 3 символа имени, фамилии или email.</p>
+        <button class="button">Найти</button>
+      </form>
+      {% for candidate in search_results %}
+        <p><a href="?user_id={{ candidate.pk }}">{{ candidate.get_full_name }} {{ candidate.email }}</a></p>
+      {% empty %}
+        {% if search_query %}<p class="muted">Подходящих пользователей не найдено. Введите от 3 до 100 символов.</p>{% endif %}
+      {% endfor %}
+      {% if search_has_more %}<p class="help">Показаны первые 10 пользователей. Уточните запрос.</p>{% endif %}
+    {% endif %}
+    <p class="muted">Пустой список отзывает все полномочия.</p>
+    <form method="post">
+      {% csrf_token %}{{ form.non_field_errors }}{{ form.user_id }}{{ form.user_id.errors }}
+      <div class="field">{{ form.permissions.label_tag }}{{ form.permissions }}{{ form.permissions.errors }}</div>
+      <button class="button" {% if not selected_user %}disabled{% endif %}>Сохранить полномочия</button>
+    </form>
+  </section>
+  <section class="panel">
+    <h2>Сотрудники</h2>
+    {% for employee in staff %}
+      <div class="member-row"><div><strong>{{ employee.email }}</strong>
+        <ul class="rights">{% for grant in employee.system_grants.all %}<li>{{ grant.get_code_display }}</li>{% endfor %}</ul>
+        <a href="?user_id={{ employee.pk }}">Изменить полномочия</a>
+      </div></div>
+    {% empty %}<p class="muted">Нет назначений.</p>{% endfor %}
+    {% if staff.has_previous %}<a href="?page={{ staff.previous_page_number }}">← Назад</a>{% endif %}
+    {% if staff.has_next %}<a href="?page={{ staff.next_page_number }}">Далее →</a>{% endif %}
+  </section>
+</div>
+{% endblock %}

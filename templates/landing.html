@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Projectus — пространство для ваших проектов{% endblock %}
+{% block content %}
+<section class="panel">
+  <h1>Ваш проект. Команда рядом.</h1>
+  <p>Projectus — рабочее пространство для социальных инициатив и других командных проектов.</p>
+  <div class="actions">
+    <a class="button" href="{% url 'register' %}">Начать работу</a>
+    <a class="button secondary" href="{% url 'login' %}">Войти в аккаунт</a>
+  </div>
+</section>
+<div class="detail-grid">
+  <section class="panel">
+    <h2>Основа для совместной работы</h2>
+    <p>Все проекты и заявки в одном кабинете. Приглашения в команду по email. Индивидуальные права участников под контролем владельца.</p>
+  </section>
+  <section class="panel">
+    <h2>Как начать</h2>
+    <ol>
+      <li>Зарегистрируйтесь и подтвердите email.</li>
+      <li>Подайте заявку на проект и дождитесь одобрения.</li>
+      <li>Пригласите команду и настройте доступ.</li>
+    </ol>
+  </section>
+</div>
+<section class="panel">
+  <h2>В разработке</h2>
+  <p>Показатели результатов, планирование мероприятий, бюджет и договоры — следующие этапы Projectus.</p>
+</section>
+{% endblock %}

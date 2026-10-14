@@ -1,0 +1,25 @@
+{% extends 'base.html' %}{% block content %}
+<h1>Мероприятия</h1>
+{% if can_plan %}<a class="button" href="{% url 'event_create' project.pk %}">+ Добавить мероприятие</a>{% endif %}
+{% if project_events %}
+<div class="table-wrap events-table-wrap" role="region" aria-label="Список мероприятий" tabindex="0">
+<table class="events-table">
+  <thead><tr><th scope="col">Номер</th><th scope="col">Наименование</th><th scope="col">Дата начала</th><th scope="col">Дата окончания</th><th scope="col">Ожидаемый результат</th><th scope="col">Статус</th><th scope="col">Действия</th></tr></thead>
+  <tbody>{% for event in project_events %}<tr>
+    <td>{{ forloop.counter }}</td>
+    <th scope="row" class="event-name"><a href="{% url 'event_detail' project.pk event.pk %}">{{ event.title }}</a></th>
+    <td class="event-date">{{ event.start_date|date:'d.m.Y' }}</td>
+    <td class="event-date">{{ event.end_date|date:'d.m.Y' }}</td>
+    <td class="event-expected">{{ event.expected_result }}</td>
+    <td><span class="tag">{{ event.get_status_display }}</span></td>
+    <td><div class="event-actions">
+      <a class="button small secondary" href="{% url 'event_detail' project.pk event.pk %}">Открыть</a>
+      {% if can_plan and event.status != 'confirmed' %}<a class="button small secondary" href="{% url 'event_plan' project.pk event.pk %}">Изменить план</a>{% endif %}
+      {% if can_record and event.status != 'confirmed' %}<a class="button small secondary" href="{% url 'event_result' project.pk event.pk %}">{% if event.status == 'planned' %}Внести факт{% else %}Изменить факт{% endif %}</a>{% endif %}
+      {% if can_confirm and event.status == 'conducted' %}<a class="button small" href="{% url 'event_confirm' project.pk event.pk %}">Подтвердить</a>{% endif %}
+    </div></td>
+  </tr>{% endfor %}</tbody>
+</table>
+</div>
+{% else %}<p>Мероприятий пока нет.</p>{% endif %}
+{% endblock %}

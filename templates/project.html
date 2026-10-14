@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<a class="back" href="{% url 'dashboard' %}">← Мои проекты</a>
+<div class="page-heading">
+  <div><h1>{{ project.title }}</h1><p class="muted">Владелец: {{ project.owner.email }}</p></div>
+  <div class="actions">
+    {% if can_edit %}<a class="button secondary" href="{% url 'project_edit' project.pk %}">Редактировать</a>{% endif %}
+    {% if owner %}<a class="button" href="{% url 'members' project.pk %}">Команда и доступ</a>{% endif %}
+  </div>
+</div>
+<div class="detail-grid">
+  <section class="panel"><h2>Краткое описание проекта</h2><div class="description">{{ project.description|linebreaks|default:'Нет описания.' }}</div></section>
+  <section class="panel"><h2>Сроки реализации проекта</h2><p>Начальная дата: {{ project.start_date|date:'d.m.Y'|default:'Не указана' }}</p><p>Конечная дата: {{ project.end_date|date:'d.m.Y'|default:'Не указана' }}</p></section>
+  <section class="panel"><h2>Цели проекта</h2>{% if project.goals %}<ol>{% for goal in project.goals %}<li>{{ goal }}</li>{% endfor %}</ol>{% else %}<p class="muted">Цели пока не добавлены.</p>{% endif %}</section>
+  <section class="panel"><h2>Задачи проекта</h2>{% if project.tasks %}<ol>{% for task in project.tasks %}<li>{{ task }}</li>{% endfor %}</ol>{% else %}<p class="muted">Задачи пока не добавлены.</p>{% endif %}</section>
+</div>
+{% endblock %}

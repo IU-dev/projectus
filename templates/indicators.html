@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Показатели</h1>
+{% if can_edit %}<a class="button" href="{% url 'indicator_create' project.pk %}">+ Добавить показатель</a>{% endif %}
+<div class="indicator-list">
+{% for indicator in indicators %}
+<article class="panel">
+  <span class="tag">{{ indicator.get_kind_display }}</span>
+  <h2>{{ indicator.title }}</h2>
+  {% if indicator.kind == 'quantitative' %}
+    <p>{{ indicator.current_value }} / {{ indicator.target_value }} {{ indicator.unit }}</p>
+    <p>{{ indicator.progress_percent }}% · {% if indicator.current_value >= indicator.target_value %}Цель достигнута{% else %}В процессе{% endif %}</p>
+  {% else %}
+    <p>{% if indicator.achieved %}Достигнут{% else %}В процессе{% endif %}</p>
+    <h3>Текущий результат</h3>
+    {{ indicator.result|linebreaks|default:'Результат пока не описан.' }}
+  {% endif %}
+  {% if can_edit %}<a href="{% url 'indicator_edit' project.pk indicator.pk %}">Редактировать</a>{% endif %}
+</article>
+{% empty %}<p class="muted">Показателей пока нет.</p>{% endfor %}
+</div>
+{% endblock %}
